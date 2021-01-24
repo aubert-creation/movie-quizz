@@ -1,0 +1,13 @@
+.mq-slideComplete {
+  flex: 1;
+  display: flex;
+  background-color: #d0d0d0;
+  height: 8px;
+  border-radius: 5px;
+  overflow: hidden;
+
+  .mq-slideComplete-progress {
+    background-color: #7059ff;
+    transition: width 200ms ease-in;
+  }
+}

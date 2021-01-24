@@ -1,0 +1,14 @@
+
+.mq-image-container {
+  padding: 10px;
+  width: 100%;
+
+  .mq-image {
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/9/96/Christophe_Lambert_et_Jean_Dujardin_%28Cropped%29.jpg);
+    width: 100%;
+    padding-top: calc(100% / 3 * 4);
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+  }
+}
