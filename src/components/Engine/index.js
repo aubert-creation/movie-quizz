@@ -1,53 +1,91 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useApolloClient } from '@apollo/client'
 
 import Card from 'components/Card'
 import Image from 'components/Image'
 import Button from 'components/Button'
 import LiveScore from 'components/LiveScore'
 
+import { CASTINGS, MOVIES_INCLUDE, MOVIES_EXCLUDE } from 'utils/requests'
+import { getRandomInt, getRandomBool } from 'utils/random'
+
 import './engine.scss'
 
 function Engine() {
-  const [currentAnswer, setCurrentAnswer] = useState(0)
+  const client = useApolloClient()
+  const [currentScore, setCurrentScore] = useState(0)
+  const [cast, setCast] = useState(null)
+  const [movie, setMovie] = useState(null)
+  const [expected, setExpected] = useState(getRandomBool())
 
-  const bdd = [{
-    cast: 'https://upload.wikimedia.org/wikipedia/commons/9/96/Christophe_Lambert_et_Jean_Dujardin_%28Cropped%29.jpg',
-    movie: 'https://fr.web.img5.acsta.net/pictures/20/09/10/18/05/4458149.jpg',
-    result: true
-  },
-  {
-    cast: 'https://business-cool.com/wp-content/uploads/2019/08/Scarlett_Johansson_by_Gage_Skidmore_2_cropped.jpg',
-    movie: 'https://fr.web.img6.acsta.net/medias/nmedia/00/02/54/30/affiche.jpg',
-    result: false
-  },
-  {
-    cast: 'https://upload.wikimedia.org/wikipedia/commons/c/ca/Harrison_Ford_by_Gage_Skidmore_2.jpg',
-    movie: 'https://img.over-blog-kiwi.com/1/88/59/62/20191211/ob_0d27f0_5.jpg',
-    result: true
-  }]
+  useEffect(() => {
+    getCasting()
+  }, [currentScore])
+
+  const getCasting = () => {
+    client.query({
+      query: CASTINGS,
+      variables: { page_num: getRandomInt(1, 5)}
+    }).then(json => {
+      let cast = null
+      if(json.data && json.data.trendingPeople && json.data.trendingPeople.length > 0) {
+        cast = json.data.trendingPeople[getRandomInt(0, json.data.trendingPeople.length)]
+
+        if(cast) {
+          getMovie(cast)
+        }
+      }
+    })
+  }
+
+  const getMovie = (cast) => {
+    client.query({
+      query: expected ? MOVIES_INCLUDE : MOVIES_EXCLUDE,
+      variables: { castId: cast.id }
+    }).then(json => {
+      let movie = null
+      if(json.data && json.data.discoverMovies && json.data.discoverMovies.length > 0) {
+        movie = json.data.discoverMovies[getRandomInt(0, json.data.discoverMovies.length)]
+      }
+
+      if(movie) {
+        setCast(cast)
+        setMovie(movie)
+      }
+    })
+  }
+
+  const performResponse = (res) => {
+    if(res === expected) {
+      setMovie(null)
+      setCast(null)
+      setCurrentScore(currentScore+1)
+      setExpected(getRandomBool())
+    } else {
+      //TODO: GAME OVER: REDIRECT TO RESULT ROUTE PAGE
+      console.log('game over')
+    }
+  }
 
   return (
     <div className="mq-container">
       <Card>
-        <LiveScore
-          currentStep={currentAnswer}
-          currentScore={2}
-        />
+        <LiveScore currentScore={currentScore} />
         <h3>Did is actor play in this movie ?</h3>
         <div className="mq-section">
-          <Image src={bdd[currentAnswer].cast} />
-          <Image src={bdd[currentAnswer].movie} />
+          <Image src={(cast && movie) ? cast.photo.medium : null } />
+          <Image src={(cast && movie) ? movie.poster.medium : null} />
         </div>
         <div className="mq-section">
           <Button
             label="Yes"
-            onClick={() => setCurrentAnswer(currentAnswer+1)}
+            onClick={() => performResponse(true)}
             fullWidth={true}
             color='#2aeb49'
           />
           <Button
             label="No"
-            onClick={() => setCurrentAnswer(currentAnswer+1)}
+            onClick={() => performResponse(false)}
             fullWidth={true}
             color='#ff5959'
           />

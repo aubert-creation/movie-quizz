@@ -3,9 +3,6 @@ import PropTypes from 'prop-types'
 import './slideComplete.scss'
 
 function SlideComplete(props) {
-  console.log('currentStep', props.currentStep)
-  console.log('maxSteps', props.maxSteps)
-
   return (
     <div className="mq-slideComplete">
       <div
