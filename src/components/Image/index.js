@@ -10,7 +10,7 @@ function Button(props) {
 }
 
 Button.propTypes = {
-  src: PropTypes.string.isRequired
+  src: PropTypes.string
 }
 
 export default Button
