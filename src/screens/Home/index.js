@@ -1,19 +1,22 @@
 import { withRouter } from "react-router-dom"
+import { useTranslation } from 'react-i18next'
 
 import Card from 'components/Card'
 import Button from 'components/Button'
 
-import './home.scss'
+import './styles.scss'
 
 function Home(props) {
+  const { t } = useTranslation('home')
+
   return (
     <div className="mq-container">
       <Card>
-        <h1>Ready to play ?</h1>
-        <p>Be the best in finding the perfect pairing between actors and movies.</p>
-        <p>Press Play and let's have some fun!</p>
+        <h1>{t('readyTitle')}</h1>
+        <p>{t('subtitle1')}</p>
+        <p>{t('subtitle2')}</p>
         <Button
-          label="Press play and let's go"
+          label={t('button')}
           onClick={() => props.history.push('play')}
         />
       </Card>

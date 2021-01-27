@@ -4,12 +4,14 @@ import Timer from 'components/Timer'
 //import SlideComplete from 'components/SlideComplete'
 import Score from 'components/Score'
 
-import './livescore.scss'
+import './styles.scss'
 
 function LiveScore(props) {
   return (
     <div className="mq-livescore">
-      <Timer />
+      <Timer
+        currentTime={props.currentTime}
+      />
       {/*
         <SlideComplete
           currentStep={props.currentStep}
@@ -24,7 +26,8 @@ function LiveScore(props) {
 }
 
 LiveScore.propTypes = {
-  currentScore: PropTypes.number
+  currentScore: PropTypes.number,
+  currentTime: PropTypes.number
 }
 
 export default LiveScore

@@ -1,0 +1,9 @@
+{
+  "title": "Perdu",
+  "timeSpent": "Temps passé à jouer",
+  "goodAnswersLabel": "Bonnes réponses",
+  "goodAnswers": "{{count}} bonne réponse",
+  "goodAnswers_plural": "{{count}} bonnes réponses",
+  "tryAgain": "Rejouer",
+  "highscore": "Meilleurs scores"
+}

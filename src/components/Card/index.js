@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import './card.scss'
+import './styles.scss'
 
 function Card(props) {
   return (
