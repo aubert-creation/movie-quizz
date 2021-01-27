@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import './slideComplete.scss'
+import './styles.scss'
 
 function SlideComplete(props) {
   return (

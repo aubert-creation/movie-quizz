@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
-import './image.scss'
+
+import './styles.scss'
 
 function Button(props) {
   return (

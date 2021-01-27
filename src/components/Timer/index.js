@@ -1,22 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 
-import './timer.scss'
+import { getDurationString } from 'utils/time'
+
+import './styles.scss'
 
 function Timer(props) {
-  const [seconds, setSeconds] = useState(0)
-  useEffect(() => {
-    let interval = setInterval(() => {
-      setSeconds(seconds => seconds + 1)
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [seconds])
-
   return (
     <div className="mq-timer">
-      {seconds}s
+      {getDurationString(props.currentTime)}
     </div>
   )
+}
+
+Timer.propTypes = {
+  currentTime: PropTypes.number
 }
 
 export default Timer

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { MdCheckCircle } from 'react-icons/md'
 
-import './score.scss'
+import './styles.scss'
 
 function Score(props) {
 

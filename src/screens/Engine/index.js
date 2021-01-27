@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useApolloClient } from '@apollo/client'
+import { withRouter } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import Card from 'components/Card'
 import Image from 'components/Image'
@@ -9,14 +11,24 @@ import LiveScore from 'components/LiveScore'
 import { CASTINGS, MOVIES_INCLUDE, MOVIES_EXCLUDE } from 'utils/requests'
 import { getRandomInt, getRandomBool } from 'utils/random'
 
-import './engine.scss'
+import './styles.scss'
 
-function Engine() {
+function Engine(props) {
+  const { t } = useTranslation('game')
   const client = useApolloClient()
   const [currentScore, setCurrentScore] = useState(0)
   const [cast, setCast] = useState(null)
   const [movie, setMovie] = useState(null)
   const [expected, setExpected] = useState(getRandomBool())
+  const [seconds, setSeconds] = useState(0)
+
+  useEffect(() => {
+    let interval = setInterval(() => {
+      setSeconds(seconds => seconds + 1)
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [seconds])
 
   useEffect(() => {
     getCasting()
@@ -62,29 +74,34 @@ function Engine() {
       setCurrentScore(currentScore+1)
       setExpected(getRandomBool())
     } else {
-      //TODO: GAME OVER: REDIRECT TO RESULT ROUTE PAGE
-      console.log('game over')
+      props.history.push({
+        pathname: 'gameover',
+        state: {
+          score: currentScore,
+          time: seconds
+        }
+      })
     }
   }
 
   return (
     <div className="mq-container">
       <Card>
-        <LiveScore currentScore={currentScore} />
-        <h3>Did is actor play in this movie ?</h3>
+        <LiveScore currentScore={currentScore} currentTime={seconds} />
+        <h3>{t('title')}</h3>
         <div className="mq-section">
           <Image src={(cast && movie) ? cast.photo.medium : null } />
           <Image src={(cast && movie) ? movie.poster.medium : null} />
         </div>
         <div className="mq-section">
           <Button
-            label="Yes"
+            label={t('yes')}
             onClick={() => performResponse(true)}
             fullWidth={true}
             color='#2aeb49'
           />
           <Button
-            label="No"
+            label={t('no')}
             onClick={() => performResponse(false)}
             fullWidth={true}
             color='#ff5959'
@@ -95,4 +112,4 @@ function Engine() {
   )
 }
 
-export default Engine
+export default withRouter(Engine)
