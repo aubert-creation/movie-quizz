@@ -23,7 +23,6 @@ function Root() {
         </Route>
       </Switch>
     </Router>
-
   )
 }
 
