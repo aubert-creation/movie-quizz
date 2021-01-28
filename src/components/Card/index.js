@@ -11,7 +11,7 @@ function Card(props) {
 }
 
 Card.propTypes = {
-  children: PropTypes.any
+  children: PropTypes.node
 }
 
 export default Card

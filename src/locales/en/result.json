@@ -5,5 +5,7 @@
   "goodAnswers": "{{count}} good answer",
   "goodAnswers_plural": "{{count}} good answers",
   "tryAgain": "Try again",
-  "highscore": "Highscore"
+  "highscore": "Highscore",
+  "inputPlaceholder": "Add your name",
+  "add": "Add"
 }
